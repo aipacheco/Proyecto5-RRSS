@@ -14,6 +14,7 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false // Esto hace que la contraseña no se devuelva por defecto
     },
     role: {
       type: String,
