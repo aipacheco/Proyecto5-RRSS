@@ -3,7 +3,6 @@ import { Request } from "express"
 export const validateUser = (req: Request) => {
   const { username, email, password } = req.body
 
-  // Ejemplo de una validación de longitud de cadena de texto
   const requiredLength = (
     username: string,
     min: number,
@@ -19,7 +18,7 @@ export const validateUser = (req: Request) => {
   }
   const isInvalidPassword = (password: string) => {
     if (password.length < 8 || password.length > 15) {
-      return "Password must be min 8 or max 15 chars."
+      return "Password must be 8-15 characters long."
     }
   }
 
@@ -27,16 +26,29 @@ export const validateUser = (req: Request) => {
     if (!email) {
       return "You have to provide an email."
     }
-    //regex de email
-    const validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/
-    if (!validEmail.test(email)) {
-      return "format email invalid"
+    const validEmailRegex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/
+    if (!validEmailRegex.test(email)) {
+      return "Invalid email format."
     }
   }
-  const validationErrors = {
-    requiredLength: requiredLength(username, 3, 20, "Nombre de usuario"),
+
+  const validationErrors: {
+    isInvalidPassword?: string
+    isInvalidEmail?: string
+    requiredLength?: string
+  } = {
     isInvalidPassword: isInvalidPassword(password),
     isInvalidEmail: isInvalidEmail(email),
+  }
+
+  // llamamos a requiredLength solo si username está presente
+  if (username) {
+    validationErrors.requiredLength = requiredLength(
+      username,
+      3,
+      20,
+      "Username"
+    )
   }
 
   return validationErrors
