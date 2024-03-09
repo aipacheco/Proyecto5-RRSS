@@ -14,8 +14,8 @@ export const register = async (req: Request, res: Response) => {
     const passEncript: string = bcrypt.hashSync(password, 12)
 
     const newUser = {
-      username: username,
-      email: email,
+      username,
+      email,
       password: passEncript,
     }
     try {
