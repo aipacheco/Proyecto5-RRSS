@@ -19,8 +19,8 @@ export const getMyProfile = async (userId: number) => {
 
 export const updateProfile = async (
   userId: number,
-  username: string,
-  email: string
+  username: string
+  // email: string
 ) => {
   const myProfile = await User.findById(userId)
   if (!myProfile) {
@@ -30,22 +30,20 @@ export const updateProfile = async (
   if (usernameExisting) {
     return { error: "username duplicated" }
   }
-  const emailExisting = await User.findOne({ email: email })
-  if (emailExisting) {
-    return { error: "email duplicated" }
-  }
 
   const updatedProfile = await User.findOneAndUpdate(
     { _id: userId },
-    { username: username, email: email },
+    { username: username },
     { new: true }
   )
   return { updated: updatedProfile }
 }
 
-export const find = async (field: string) => {
-  const search = await User.findOne({ [field]: field }).exec()
+export const findUsername = async (id: number) => {
+  const search = await User.findOne({ _id: id }).exec()
   if (!search) {
-    return `${field} in database` 
+    return { error: "user not found" }
   }
+
+  return search.username
 }

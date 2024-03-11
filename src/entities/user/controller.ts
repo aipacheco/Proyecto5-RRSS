@@ -40,26 +40,21 @@ export const getMyProfile = async (req: Request, res: Response) => {
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
-  const { username, email } = req.body
+  const { username } = req.body
   const { userId } = req.tokenData
+ 
+  const existingUsername = await Repository.findUsername(userId)
 
-  const existingUsername = username ? await Repository.find(username) : null
-  const existingEmail = email ? await Repository.find(email) : null
-
-  console.log(existingEmail, existingUsername)
   // Verificar si los campos no han cambiado
-  if (existingUsername || existingEmail) {
+  if (existingUsername === username) {
     return res.status(400).json({
       success: false,
-      message: "No changes detected. Your profile was not updated",
+      message: "No changes detected. Your username was not updated",
     })
   }
+
   try {
-    const { updated, error } = await Repository.updateProfile(
-      userId,
-      username,
-      email
-    )
+    const { updated, error } = await Repository.updateProfile(userId, username)
     if (error) {
       return res.status(400).json({
         success: false,
