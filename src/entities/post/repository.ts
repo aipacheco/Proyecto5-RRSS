@@ -33,8 +33,8 @@ export const updatePost = async (
   userId: number,
   content: string
 ) => {
-  const ID = await User.findById(userId)
-  if (!ID) {
+  const userID = await User.findById(userId)
+  if (!userID) {
     return { error: "user not found" }
   }
   const postFind = await Post.findById(postId)
@@ -47,4 +47,20 @@ export const updatePost = async (
     { new: true }
   )
   return { post: postUpdated }
+}
+
+export const getMyPosts = async (
+  userId: number,
+  postId: string,
+  content: string
+) => {
+  const userID = await User.findById(userId)
+  if (!userID) {
+    return { error: "user not found" }
+  }
+  const allMyPosts = await Post.find({
+    author: userID,
+  })
+
+  return { post: allMyPosts }
 }

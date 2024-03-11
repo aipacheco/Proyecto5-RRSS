@@ -71,3 +71,25 @@ export const updatePost = async (req: Request, res: Response) => {
     })
   }
 }
+
+export const getMyPosts = async (req: Request, res: Response) => {
+  const { userId } = req.tokenData
+  const { postId, content } = req.body
+
+  const { post, error } = await Repository.getMyPosts(userId, postId, content)
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error,
+    })
+  }
+
+
+  if (post) {
+    return res.status(200).json({
+      success: true,
+      message: "All my posts",
+      data: post,
+    })
+  }
+}
