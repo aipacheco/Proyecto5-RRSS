@@ -1,6 +1,5 @@
 import { Request, Response } from "express"
 import * as Repository from "./repository"
-import User from "./model"
 
 export const getUsers = async (req: Request, res: Response) => {
   const { user, error } = await Repository.getUsers()

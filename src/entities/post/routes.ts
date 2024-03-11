@@ -10,6 +10,7 @@ postRouter.delete("/:id",auth, Controller.deletePost)
 postRouter.put("/:id",auth, Controller.updatePost)
 postRouter.get("/own",auth, Controller.getMyPosts)
 postRouter.get("/", Controller.getAllPosts)
+postRouter.get("/:id", Controller.getPostById)
 
 
 

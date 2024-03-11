@@ -72,3 +72,11 @@ export const getAllPosts = async () => {
   }
   return { post: allPosts }
 }
+
+export const getPostById = async (postId: string) => {
+  const postFind = await Post.findById(postId)
+  if (!postFind) {
+    return { error: "post not found" }
+  }
+  return { post: postFind }
+}

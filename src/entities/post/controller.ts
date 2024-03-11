@@ -84,7 +84,6 @@ export const getMyPosts = async (req: Request, res: Response) => {
     })
   }
 
-
   if (post) {
     return res.status(200).json({
       success: true,
@@ -95,7 +94,6 @@ export const getMyPosts = async (req: Request, res: Response) => {
 }
 
 export const getAllPosts = async (req: Request, res: Response) => {
-
   const { post, error } = await Repository.getAllPosts()
   if (error) {
     return res.status(400).json({
@@ -108,6 +106,32 @@ export const getAllPosts = async (req: Request, res: Response) => {
       success: true,
       message: "All posts",
       data: post,
+    })
+  }
+}
+
+export const getPostById = async (req: Request, res: Response) => {
+  const postId = req.params.id
+
+  try {
+    const { post, error } = await Repository.getPostById(postId)
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      })
+    }
+    if (post) {
+      return res.status(200).json({
+        success: true,
+        message: "Your post",
+        data: post,
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
     })
   }
 }
