@@ -47,3 +47,27 @@ export const deletePost = async (req: Request, res: Response) => {
     })
   }
 }
+
+export const updatePost = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { userId } = req.tokenData
+  const { content } = req.body
+
+  //todo: validaciones
+
+  const { post, error } = await Repository.updatePost(id, userId, content)
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error,
+    })
+  }
+
+  if (post) {
+    return res.status(201).json({
+      success: true,
+      message: "Post updated",
+      data: post,
+    })
+  }
+}
