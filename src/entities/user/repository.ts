@@ -1,5 +1,5 @@
-import { Request } from "express"
 import User from "./model"
+import Post from "../post/model"
 
 export const getUsers = async () => {
   const users = await User.find()
@@ -46,4 +46,14 @@ export const findUsername = async (userId: number) => {
   }
 
   return search.username
+}
+
+export const getUserPosts = async (userId: string) => {
+  const userPosts = await Post.find({
+    author: userId,
+  })
+  if (!userPosts) {
+    return { error: "user has no posts" }
+  }
+  return { post: userPosts }
 }

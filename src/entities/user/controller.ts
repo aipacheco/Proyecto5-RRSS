@@ -74,3 +74,31 @@ export const updateProfile = async (req: Request, res: Response) => {
     })
   }
 }
+
+export const getUserPosts = async (req: Request, res: Response) => {
+const {userId }= req.params
+
+  const { post, error } = await Repository.getUserPosts(userId)
+
+  try {
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      })
+    }
+  
+    if (post) {
+      return res.status(201).json({
+        success: true,
+        message: "Posts by user",
+        data: post,
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    })
+  }
+}
