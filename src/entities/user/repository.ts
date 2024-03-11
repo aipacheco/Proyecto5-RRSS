@@ -48,5 +48,6 @@ export const find = async(field:string)=>{
   // if(!search){
   //   return {existing: `${field} in database`}
   // }
+  console.log(search)
   return search
 }
