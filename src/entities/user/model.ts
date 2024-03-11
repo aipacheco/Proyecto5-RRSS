@@ -21,7 +21,7 @@ const UserSchema = new Schema(
       enum: ["user", "admin", "super_admin"],
       default: "user",
     },
-    
+    // post:[]
   },
   {
     timestamps: true,
