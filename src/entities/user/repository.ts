@@ -43,11 +43,9 @@ export const updateProfile = async (
   return { updated: updatedProfile }
 }
 
-export const find = async(field:string)=>{
+export const find = async (field: string) => {
   const search = await User.findOne({ [field]: field }).exec()
-  // if(!search){
-  //   return {existing: `${field} in database`}
-  // }
-  console.log(search)
-  return search
+  if (!search) {
+    return `${field} in database` 
+  }
 }

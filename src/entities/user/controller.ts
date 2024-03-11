@@ -46,6 +46,7 @@ export const updateProfile = async (req: Request, res: Response) => {
   const existingUsername = username ? await Repository.find(username) : null
   const existingEmail = email ? await Repository.find(email) : null
 
+  console.log(existingEmail, existingUsername)
   // Verificar si los campos no han cambiado
   if (existingUsername || existingEmail) {
     return res.status(400).json({
@@ -53,7 +54,6 @@ export const updateProfile = async (req: Request, res: Response) => {
       message: "No changes detected. Your profile was not updated",
     })
   }
-  //todo: validaciones de campos nuevos
   try {
     const { updated, error } = await Repository.updateProfile(
       userId,
