@@ -93,3 +93,21 @@ export const getMyPosts = async (req: Request, res: Response) => {
     })
   }
 }
+
+export const getAllPosts = async (req: Request, res: Response) => {
+
+  const { post, error } = await Repository.getAllPosts()
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error,
+    })
+  }
+  if (post) {
+    return res.status(200).json({
+      success: true,
+      message: "All posts",
+      data: post,
+    })
+  }
+}

@@ -8,7 +8,9 @@ const postRouter = express.Router()
 postRouter.post("/",auth, Controller.createPost)
 postRouter.delete("/:id",auth, Controller.deletePost)
 postRouter.put("/:id",auth, Controller.updatePost)
-postRouter.get("/",auth, Controller.getMyPosts)
+postRouter.get("/own",auth, Controller.getMyPosts)
+postRouter.get("/", Controller.getAllPosts)
+
 
 
 

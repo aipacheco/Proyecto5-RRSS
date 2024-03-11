@@ -64,3 +64,11 @@ export const getMyPosts = async (
 
   return { post: allMyPosts }
 }
+
+export const getAllPosts = async () => {
+  const allPosts = await Post.find({})
+  if (!allPosts) {
+    return { error: "No posts found" }
+  }
+  return { post: allPosts }
+}
