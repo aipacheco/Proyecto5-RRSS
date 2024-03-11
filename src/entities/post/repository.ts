@@ -8,9 +8,22 @@ export const createPost = async (userId: number, content: string) => {
     return { error: "user not found" }
   }
 
-    const newPost = await Post.create({
-      author: userId,
-      content: content,
-    })
-    return { post: newPost }
+  const newPost = await Post.create({
+    author: userId,
+    content: content,
+  })
+  return { post: newPost }
+}
+
+export const deletePost = async (postId: string, userId: number) => {
+  const ID = await User.findById(userId)
+  if (!ID) {
+    return { error: "user not found" }
+  }
+  const postFind = await Post.findById(postId)
+  if (!postFind) {
+    return { error: "post not found" }
+  }
+  const postDeleted = await Post.findOneAndDelete({ _id: postId })
+  return { post: postDeleted }
 }
