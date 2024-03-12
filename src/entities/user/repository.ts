@@ -17,11 +17,7 @@ export const getMyProfile = async (userId: number) => {
   return { user: myProfile }
 }
 
-export const updateProfile = async (
-  userId: number,
-  username: string
-  // email: string
-) => {
+export const updateProfile = async (userId: number, username: string) => {
   const myProfile = await User.findById(userId)
   if (!myProfile) {
     return { error: "profile not found" }
@@ -44,7 +40,6 @@ export const findUsername = async (userId: number) => {
   if (!search) {
     return { error: "user not found" }
   }
-
   return search.username
 }
 
