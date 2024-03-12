@@ -45,7 +45,7 @@ export const register = async (req: Request, res: Response) => {
     } catch (error) {
       return res.status(500).json({
         success: false,
-        message: "An error occurred while creating the user",
+        message: error,
       })
     }
   }
@@ -59,49 +59,54 @@ export const login = async (req: Request, res: Response) => {
   const { requiredLength, isInvalidPassword, isInvalidEmail } = loginErrors
 
   if (!requiredLength && !isInvalidPassword && !isInvalidEmail) {
+    try {
+      const { userLogged, error } = await Repository.findEmail(email)
 
-    //falta try/catch
-    const { userLogged, error } = await Repository.findEmail(email)
+      if (error) {
+        return res.status(400).json({
+          success: false,
+          message: error,
+        })
+      }
 
-    if (error) {
-      return res.status(400).json({
+      if (userLogged) {
+        //   console.log(userLogged.password)
+
+        const hashedPassword = userLogged.password
+
+        if (hashedPassword) {
+          const isValidPassword = bcrypt.compareSync(password, hashedPassword)
+          if (isValidPassword) {
+            //creacion del token
+            const token = Jwt.sign(
+              {
+                userId: userLogged.id,
+                role: userLogged.role,
+              },
+              process.env.JWT_SECRET as string,
+              {
+                expiresIn: "2h",
+              }
+            )
+            // devolver datos del usuario y el token
+            return res.status(200).json({
+              success: true,
+              message: "User logged",
+              token: token,
+            })
+          } else {
+            return res.status(401).json({
+              success: false,
+              message: "Invalid password",
+            })
+          }
+        }
+      }
+    } catch (error) {
+      return res.status(500).json({
         success: false,
         message: error,
       })
-    }
-
-    if (userLogged) {
-      //   console.log(userLogged.password)
-
-      const hashedPassword = userLogged.password
-
-      if (hashedPassword) {
-        const isValidPassword = bcrypt.compareSync(password, hashedPassword)
-        if (isValidPassword) {
-          //creacion del token
-          const token = Jwt.sign(
-            {
-              userId: userLogged.id,
-              role: userLogged.role,
-            },
-            process.env.JWT_SECRET as string,
-            {
-              expiresIn: "2h",
-            }
-          )
-          // devolver datos del usuario y el token
-          return res.status(200).json({
-            success: true,
-            message: "User logged",
-            token: token,
-          })
-        } else {
-          return res.status(401).json({
-            success: false,
-            message: "Invalid password",
-          })
-        }
-      }
     }
   }
 }

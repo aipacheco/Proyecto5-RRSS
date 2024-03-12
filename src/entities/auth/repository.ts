@@ -18,12 +18,12 @@ export const register = async (newUser: any) => {
 
 export const findEmail = async (email: string) => {
   const findEmail = await User.findOne({ email: email })
-  .select('+password')
-  .select('+role')
-  .exec()
+    .select("+password")
+    .select("+role")
+    .exec()
 
   if (!findEmail) {
     return { error: "Email not found" }
   }
-  return {userLogged: findEmail}
+  return { userLogged: findEmail }
 }
