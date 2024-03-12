@@ -47,11 +47,7 @@ export const updatePost = async (
   return { post: postUpdated }
 }
 
-export const getMyPosts = async (
-  userId: number,
-  postId: string,
-  content: string
-) => {
+export const getMyPosts = async (userId: number) => {
   const userID = await User.findById(userId)
   if (!userID) {
     return { error: "user not found" }
@@ -79,7 +75,6 @@ export const getPostById = async (postId: string) => {
 }
 
 export const likePost = async (postId: string, userId: any) => {
-
   const post = await Post.findById(postId)
   if (!post) {
     return { error: "Post not found" }
