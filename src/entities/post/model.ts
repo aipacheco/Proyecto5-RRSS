@@ -18,6 +18,11 @@ const PostSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    //estructura para poder dar like al post
+    likes: [{
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }],
   },
   {
     timestamps: true, // Crea automáticamente campos para 'createdAt' y 'updatedAt'
@@ -26,6 +31,5 @@ const PostSchema = new Schema(
 )
 
 const Post = model("Post", PostSchema)
-
 
 export default Post
