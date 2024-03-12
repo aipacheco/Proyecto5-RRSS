@@ -96,7 +96,7 @@ export const getMyPosts = async (req: Request, res: Response) => {
   const { postId, content } = req.body
 
   try {
-    const { post, error } = await Repository.getMyPosts(userId, postId, content)
+    const { post, error } = await Repository.getMyPosts(userId )
     if (error) {
       return res.status(400).json({
         success: false,
