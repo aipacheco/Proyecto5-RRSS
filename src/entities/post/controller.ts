@@ -135,3 +135,31 @@ export const getPostById = async (req: Request, res: Response) => {
     })
   }
 }
+
+export const likePost = async (req: Request, res: Response) => {
+  const postId = req.params.id
+  const { userId } = req.tokenData
+
+  try {
+    const {post, error} = await Repository.likePost(postId, userId)
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      })
+    }
+    if (post) {
+      return res.status(200).json({
+        success: true,
+        message: "You liked/disliked this post",
+        data: post,
+      })
+    }
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    })
+  }
+}

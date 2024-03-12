@@ -1,4 +1,3 @@
-import { Request } from "express"
 import Post from "./model"
 import User from "../user/model"
 
@@ -7,7 +6,6 @@ export const createPost = async (userId: number, content: string) => {
   if (!ID) {
     return { error: "user not found" }
   }
-
   const newPost = await Post.create({
     author: userId,
     content: content,
@@ -61,7 +59,6 @@ export const getMyPosts = async (
   const allMyPosts = await Post.find({
     author: userID,
   })
-
   return { post: allMyPosts }
 }
 
@@ -79,4 +76,22 @@ export const getPostById = async (postId: string) => {
     return { error: "post not found" }
   }
   return { post: postFind }
+}
+
+export const likePost = async (postId: string, userId: any) => {
+
+  const post = await Post.findById(postId)
+  if (!post) {
+    return { error: "Post not found" }
+  }
+  // Comprobar si el usuario ya ha dado like al post
+  const index = post.likes.indexOf(userId)
+  // console.log(index)
+  if (index === -1) {
+    post.likes.push(userId)
+  } else {
+    post.likes.splice(index, 1)
+  }
+  const updatedPost = await post.save()
+  return { post: updatedPost }
 }
