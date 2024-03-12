@@ -6,21 +6,26 @@ export const createPost = async (req: Request, res: Response) => {
   const { userId } = req.tokenData
 
   //todo: validaciones
+  try {
+    const { post, error } = await Repository.createPost(userId, content)
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      })
+    }
 
-  const { post, error } = await Repository.createPost(userId, content)
-
-  if (error) {
-    return res.status(400).json({
+    if (post) {
+      return res.status(201).json({
+        success: true,
+        message: "Post created",
+        data: post,
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
       success: false,
       message: error,
-    })
-  }
-
-  if (post) {
-    return res.status(201).json({
-      success: true,
-      message: "Post created",
-      data: post,
     })
   }
 }
@@ -31,19 +36,26 @@ export const deletePost = async (req: Request, res: Response) => {
 
   //todo: validaciones
 
-  const { post, error } = await Repository.deletePost(id, userId)
-  if (error) {
-    return res.status(400).json({
+  try {
+    const { post, error } = await Repository.deletePost(id, userId)
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      })
+    }
+
+    if (post) {
+      return res.status(201).json({
+        success: true,
+        message: "Post deleted",
+        data: post,
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
       success: false,
       message: error,
-    })
-  }
-
-  if (post) {
-    return res.status(201).json({
-      success: true,
-      message: "Post deleted",
-      data: post,
     })
   }
 }
@@ -55,19 +67,26 @@ export const updatePost = async (req: Request, res: Response) => {
 
   //todo: validaciones
 
-  const { post, error } = await Repository.updatePost(id, userId, content)
-  if (error) {
-    return res.status(400).json({
+  try {
+    const { post, error } = await Repository.updatePost(id, userId, content)
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      })
+    }
+
+    if (post) {
+      return res.status(201).json({
+        success: true,
+        message: "Post updated",
+        data: post,
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
       success: false,
       message: error,
-    })
-  }
-
-  if (post) {
-    return res.status(201).json({
-      success: true,
-      message: "Post updated",
-      data: post,
     })
   }
 }
@@ -76,36 +95,50 @@ export const getMyPosts = async (req: Request, res: Response) => {
   const { userId } = req.tokenData
   const { postId, content } = req.body
 
-  const { post, error } = await Repository.getMyPosts(userId, postId, content)
-  if (error) {
-    return res.status(400).json({
+  try {
+    const { post, error } = await Repository.getMyPosts(userId )
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      })
+    }
+
+    if (post) {
+      return res.status(200).json({
+        success: true,
+        message: "All my posts",
+        data: post,
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
       success: false,
       message: error,
-    })
-  }
-
-  if (post) {
-    return res.status(200).json({
-      success: true,
-      message: "All my posts",
-      data: post,
     })
   }
 }
 
 export const getAllPosts = async (req: Request, res: Response) => {
-  const { post, error } = await Repository.getAllPosts()
-  if (error) {
-    return res.status(400).json({
+  try {
+    const { post, error } = await Repository.getAllPosts()
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      })
+    }
+    if (post) {
+      return res.status(200).json({
+        success: true,
+        message: "All posts",
+        data: post,
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
       success: false,
       message: error,
-    })
-  }
-  if (post) {
-    return res.status(200).json({
-      success: true,
-      message: "All posts",
-      data: post,
     })
   }
 }
@@ -141,7 +174,7 @@ export const likePost = async (req: Request, res: Response) => {
   const { userId } = req.tokenData
 
   try {
-    const {post, error} = await Repository.likePost(postId, userId)
+    const { post, error } = await Repository.likePost(postId, userId)
     if (error) {
       return res.status(400).json({
         success: false,
@@ -155,7 +188,6 @@ export const likePost = async (req: Request, res: Response) => {
         data: post,
       })
     }
-
   } catch (error) {
     return res.status(500).json({
       success: false,
