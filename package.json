@@ -8,7 +8,7 @@
     "dev": "nodemon ./src/server.ts",
     "seeder": "ts-node ./src/database/seeder.ts",
     "build": "tsc",
-    "start": "node app.js"
+    "start": "node ./src/app.js"
   },
   "keywords": [],
   "author": "",
