@@ -34,14 +34,13 @@ export const updatePost = async (
   userId: number,
   content: string
 ) => {
-  const userID = await Post.findOne({ author: userId })
-  if (!userID) {
-    return { error: "unauthorized" }
-  }
-
   const postFind = await Post.findById(postId)
   if (!postFind) {
     return { error: "post not found" }
+  }
+  const author = await Post.findOne({ _id: postId, author: userId })
+  if (!author) {
+    return { error: "unauthorized" }
   }
   const postUpdated = await Post.findOneAndUpdate(
     { _id: postId },
