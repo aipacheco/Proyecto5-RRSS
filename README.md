@@ -1,6 +1,6 @@
 # Proyecto Api Backend para una red social.
 
-<img src="../Proyecto5-RRSS/assets/h8ter.png" alt="">
+<img src="./assets/h8ter.png" alt="">
 
 <details>
   <summary>Contenido 📝</summary>
