@@ -1,32 +1,42 @@
 import { Request, Response } from "express"
 import * as Repository from "./repository"
+import { contentValidationError } from "./services"
 
 export const createPost = async (req: Request, res: Response) => {
   const { content } = req.body
   const { userId } = req.tokenData
 
-  //todo: validaciones
-  try {
-    const { post, error } = await Repository.createPost(userId, content)
-    if (error) {
-      return res.status(400).json({
+  const { success, error } = contentValidationError(content)
+  // console.log("las dos opciones", success, error)
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error,
+    })
+  }
+  if (success) {
+    try {
+      const { post, error } = await Repository.createPost(userId, content)
+      if (error) {
+        return res.status(400).json({
+          success: false,
+          message: error,
+        })
+      }
+
+      if (post) {
+        return res.status(201).json({
+          success: true,
+          message: "Post created",
+          data: post,
+        })
+      }
+    } catch (error) {
+      return res.status(500).json({
         success: false,
         message: error,
       })
     }
-
-    if (post) {
-      return res.status(201).json({
-        success: true,
-        message: "Post created",
-        data: post,
-      })
-    }
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error,
-    })
   }
 }
 
@@ -65,29 +75,37 @@ export const updatePost = async (req: Request, res: Response) => {
   const { userId } = req.tokenData
   const { content } = req.body
 
-  //todo: validaciones
+  const { success, error } = contentValidationError(content)
+  // console.log("las dos opciones", success, error)
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error,
+    })
+  }
+  if (success) {
+    try {
+      const { post, error } = await Repository.updatePost(id, userId, content)
+      if (error) {
+        return res.status(400).json({
+          success: false,
+          message: error,
+        })
+      }
 
-  try {
-    const { post, error } = await Repository.updatePost(id, userId, content)
-    if (error) {
-      return res.status(400).json({
+      if (post) {
+        return res.status(201).json({
+          success: true,
+          message: "Post updated",
+          data: post,
+        })
+      }
+    } catch (error) {
+      return res.status(500).json({
         success: false,
         message: error,
       })
     }
-
-    if (post) {
-      return res.status(201).json({
-        success: true,
-        message: "Post updated",
-        data: post,
-      })
-    }
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error,
-    })
   }
 }
 
@@ -96,7 +114,7 @@ export const getMyPosts = async (req: Request, res: Response) => {
   const { postId, content } = req.body
 
   try {
-    const { post, error } = await Repository.getMyPosts(userId )
+    const { post, error } = await Repository.getMyPosts(userId)
     if (error) {
       return res.status(400).json({
         success: false,
