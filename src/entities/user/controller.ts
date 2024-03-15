@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import * as Repository from "./repository"
+import { UsernameRequiredLength } from "./services"
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -53,6 +54,7 @@ export const getMyProfile = async (req: Request, res: Response) => {
 export const updateProfile = async (req: Request, res: Response) => {
   const { username } = req.body
   const { userId } = req.tokenData
+
   try {
     const existingUsername = await Repository.findUsername(userId)
 
@@ -70,27 +72,39 @@ export const updateProfile = async (req: Request, res: Response) => {
     })
   }
 
-  try {
-    const { updated, error } = await Repository.updateProfile(userId, username)
-   
-    if (error) {
-      return res.status(400).json({
+  const { error, success } = UsernameRequiredLength(username, 8, 25)
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error,
+    })
+  }
+  if (success) {
+    try {
+      const { updated, error } = await Repository.updateProfile(
+        userId,
+        username
+      )
+
+      if (error) {
+        return res.status(400).json({
+          success: false,
+          message: error,
+        })
+      }
+      if (updated) {
+        return res.status(201).json({
+          success: true,
+          message: "Your profile was updated",
+          data: updated,
+        })
+      }
+    } catch (error) {
+      return res.status(500).json({
         success: false,
         message: error,
       })
     }
-    if (updated) {
-      return res.status(201).json({
-        success: true,
-        message: "Your profile was updated",
-        data: updated,
-      })
-    }
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error,
-    })
   }
 }
 
