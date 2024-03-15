@@ -14,15 +14,18 @@ export const createPost = async (userId: number, content: string) => {
 }
 
 export const deletePost = async (postId: string, userId: number) => {
-  const ID = await User.findById(userId)
-  if (!ID) {
-    return { error: "user not found" }
-  }
   const postFind = await Post.findById(postId)
   if (!postFind) {
     return { error: "post not found" }
   }
-  const postDeleted = await Post.findOneAndDelete({ _id: postId })
+  const author = await Post.findOne({ _id: postId, author: userId })
+  if (!author) {
+    return { error: "unauthorized" }
+  }
+  const postDeleted = await Post.findOneAndDelete({
+    _id: postFind,
+    author: author,
+  })
   return { post: postDeleted }
 }
 
@@ -31,10 +34,11 @@ export const updatePost = async (
   userId: number,
   content: string
 ) => {
-  const userID = await User.findById(userId)
+  const userID = await Post.findOne({ author: userId })
   if (!userID) {
-    return { error: "user not found" }
+    return { error: "unauthorized" }
   }
+
   const postFind = await Post.findById(postId)
   if (!postFind) {
     return { error: "post not found" }
