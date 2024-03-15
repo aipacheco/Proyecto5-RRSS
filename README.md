@@ -77,26 +77,26 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
 El usuario tiene que ser super_admin para ver todos los usuarios
 
 
-  <!-- - GET BY EMAIL
+  - GET BY EMAIL
 
-            GET http://localhost:4000/api/users?email=example@email.com
+            GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/users?email=example@email.com
 
     El usuario tiene que ser super_admin para ver todos los usuarios y la búsqueda le devolverá el usuario por email
 
     ```js
-        {
-            "success": true,
-            "message": "User by email",
-            "data": [
-    	    {
-    		"id": 35,
-    		"first_name": "Ralph",
-    		"last_name": "Marquardt",
-    		"email": "admin@admin.com"
-    	    }
-            ]
+      {
+	        "success": true,
+	        "message": "User by email",
+	        "data": {
+		        "_id": "65f31eefc610f2eeb5d2f151",
+		        "username": "superadmin",
+		        "email": "superadmin@superadmin.com",
+		        "role": "super_admin",
+		        "createdAt": "2024-03-14T15:59:43.223Z",
+		        "updatedAt": "2024-03-15T11:37:10.701Z"
+	        }
         }
-    ``` -->
+    ```
   - GET PROFILE
 
         GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/users/profile

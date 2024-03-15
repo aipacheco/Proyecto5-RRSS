@@ -52,3 +52,11 @@ export const getUserPosts = async (userId: string) => {
   }
   return { post: userPosts }
 }
+
+export const getUserByEmail = async (email: string) => {
+  const findEmail = await User.findOne({ email: email })
+  if (!findEmail) {
+    return { error: "email not found" }
+  }
+  return { data: findEmail }
+}
