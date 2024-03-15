@@ -13,15 +13,7 @@ const createSeedData = async () => {
     // Eliminar datos existentes
     await User.deleteMany({})
     await Post.deleteMany({})
-
-    // Crear 20 usuarios
-    const userPromises = Array.from({ length: 20 }, async () => {
-      const user = new User({
-        username: faker.internet.userName(),
-        email: faker.internet.email(),
-        password: bcrypt.hashSync("123456789", 12),
-      })
-      await user.save()
+    
       //crear un super_admin
       const superAdmin = new User({
         username: "superAdmin",
@@ -30,6 +22,15 @@ const createSeedData = async () => {
         role: "super_admin",
       })
       await superAdmin.save()
+    // Crear 20 usuarios
+    const userPromises = Array.from({ length: 20 }, async () => {
+      const user = new User({
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: bcrypt.hashSync("123456789", 12),
+      })
+      await user.save()
+
 
       // Para cada usuario, crear 10 posts
       const postPromises = Array.from({ length: 10 }, () => {
