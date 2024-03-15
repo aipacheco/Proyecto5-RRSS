@@ -3,26 +3,53 @@ import * as Repository from "./repository"
 import { UsernameRequiredLength } from "./services"
 
 export const getUsers = async (req: Request, res: Response) => {
-  try {
-    const { user, error } = await Repository.getUsers()
-    if (error) {
-      return res.status(400).json({
+  const email = req.query.email as string
+
+  if (email) {
+    try {
+      const { error, data } = await Repository.getUserByEmail(email)
+
+      if (data) {
+        return res.status(200).json({
+          success: true,
+          message: "User by email",
+          data: data,
+        })
+      }
+      if (error) {
+        return res.status(404).json({
+          success: true,
+          message: "User not found",
+        })
+      }
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Error interno del servidor",
+      })
+    }
+  } else {
+    try {
+      const { user, error } = await Repository.getUsers()
+      if (error) {
+        return res.status(400).json({
+          success: false,
+          message: error,
+        })
+      }
+      if (user) {
+        return res.status(201).json({
+          success: true,
+          message: "All users",
+          data: user,
+        })
+      }
+    } catch (error) {
+      return res.status(500).json({
         success: false,
         message: error,
       })
     }
-    if (user) {
-      return res.status(201).json({
-        success: true,
-        message: "User created",
-        data: user,
-      })
-    }
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error,
-    })
   }
 }
 
