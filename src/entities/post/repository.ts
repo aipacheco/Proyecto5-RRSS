@@ -83,12 +83,10 @@ export const likePost = async (postId: string, userId: any) => {
     return { error: "Post not found" }
   }
   // Comprobar si el usuario ya ha dado like al post
-  const index = post.likes.indexOf(userId)
-  // console.log(index)
-  if (index === -1) {
-    post.likes.push(userId)
+  if (post.likes.includes(userId)) {
+    post.likes = post.likes.filter((id) => id !== userId)
   } else {
-    post.likes.splice(index, 1)
+    post.likes.push(userId)
   }
   const updatedPost = await post.save()
   return { post: updatedPost }

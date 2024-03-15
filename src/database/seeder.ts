@@ -13,16 +13,18 @@ const createSeedData = async () => {
     // Eliminar datos existentes
     await User.deleteMany({})
     await Post.deleteMany({})
-    
-      //crear un super_admin
-      const superAdmin = new User({
-        username: "superAdmin",
-        email: "superadmin@superadmin.com",
-        password: bcrypt.hashSync("123456789", 12),
-        role: "super_admin",
-      })
-      await superAdmin.save()
-    // Crear 20 usuarios
+
+    // Crear un super_admin
+    const superAdmin = new User({
+      username: "superAdmin",
+      email: "superadmin@superadmin.com",
+      password: bcrypt.hashSync("123456789", 12),
+      role: "super_admin",
+    })
+    await superAdmin.save()
+
+    // Crear 20 usuarios y recoger sus IDs
+    let userIds: any[] = [] // Inicializar el arreglo de userIds
     const userPromises = Array.from({ length: 20 }, async () => {
       const user = new User({
         username: faker.internet.userName(),
@@ -30,7 +32,7 @@ const createSeedData = async () => {
         password: bcrypt.hashSync("123456789", 12),
       })
       await user.save()
-
+      userIds.push(user._id) // Añadir el ID del usuario recién creado al arreglo de userIds
 
       // Para cada usuario, crear 10 posts
       const postPromises = Array.from({ length: 10 }, () => {
@@ -38,6 +40,11 @@ const createSeedData = async () => {
           author: user._id,
           content: faker.lorem.paragraphs(),
           publishedAt: faker.date.past(),
+          //añadir likes
+          likes: Array.from(
+            { length: Math.floor(Math.random() * 10) },
+            () => userIds[Math.floor(Math.random() * userIds.length)]
+          ), // Seleccionar IDs de usuario aleatorios del arreglo
         })
         return post.save()
       })
@@ -53,7 +60,8 @@ const createSeedData = async () => {
   } catch (error) {
     console.error("Error al generar datos de prueba:", error)
   } finally {
-    mongoose.disconnect()
+    mongoose.connection.close()
   }
 }
+
 createSeedData()
