@@ -42,9 +42,13 @@ const createSeedData = async () => {
           publishedAt: faker.date.past(),
           //añadir likes
           likes: Array.from(
-            { length: Math.floor(Math.random() * 10) },
-            () => userIds[Math.floor(Math.random() * userIds.length)]
-          ), // Seleccionar IDs de usuario aleatorios del arreglo
+            new Set(
+              Array.from(
+                { length: Math.floor(Math.random() * 10) },
+                () => userIds[Math.floor(Math.random() * userIds.length)]
+              )
+            )
+          ),
         })
         return post.save()
       })
