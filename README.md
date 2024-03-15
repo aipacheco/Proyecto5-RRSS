@@ -75,7 +75,8 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
   - GET
 
             GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/users
-El usuario tiene que ser super_admin para ver todos los usuarios
+
+    El usuario tiene que ser super_admin para ver todos los usuarios {"email":"superadmin@superadmin.com", "password":"123456789"}
 
 
   - GET BY EMAIL
@@ -84,8 +85,8 @@ El usuario tiene que ser super_admin para ver todos los usuarios
 
     El usuario tiene que ser super_admin para ver todos los usuarios y la búsqueda le devolverá el usuario por email
 
-    ```js
-      {
+   	 ```js
+     	 {
 	        "success": true,
 	        "message": "User by email",
 	        "data": {
@@ -96,8 +97,8 @@ El usuario tiene que ser super_admin para ver todos los usuarios
 		        "createdAt": "2024-03-14T15:59:43.223Z",
 		        "updatedAt": "2024-03-15T11:37:10.701Z"
 	        }
-        }
-    ```
+      	  }
+   	 ```
   - GET PROFILE
 
         GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/users/profile
