@@ -1,5 +1,6 @@
 import Post from "./model"
 import User from "../user/model"
+import { ObjectId } from "mongoose"
 
 export const createPost = async (userId: number, content: string) => {
   const ID = await User.findById(userId)
@@ -83,11 +84,17 @@ export const likePost = async (postId: string, userId: any) => {
     return { error: "Post not found" }
   }
   // Comprobar si el usuario ya ha dado like al post
-  if (post.likes.includes(userId)) {
-    post.likes = post.likes.filter((id) => id !== userId)
-  } else {
+  let content = post.likes.includes(userId)
+  let message: string = ""
+
+  if (content) {
+    message = "dislike"
+    post.likes = post.likes.filter((id) => id != userId)
+  }
+else {
+    message = "like"
     post.likes.push(userId)
   }
   const updatedPost = await post.save()
-  return { post: updatedPost }
+  return { post: updatedPost, message }
 }
