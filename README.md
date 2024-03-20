@@ -26,6 +26,8 @@ El backend de esta API está desplegado en [Enlace a fl0](https://rrss-dev-fkcm.
 
 Este proyecto requería una API funcional conectada a una base de datos con dos Documentos MongoDB llamados User y Post
 
+<img src="./assets/diagramaMongo.png" alt="">
+
 
 ## Instalación en local
 
