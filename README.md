@@ -172,7 +172,7 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
 
   - GET USER POST
 
-          GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/posts/user_id
+          GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/users/posts/user_id
 
     Trae todos los posts de un usuario   
 
