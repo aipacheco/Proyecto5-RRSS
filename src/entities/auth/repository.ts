@@ -1,19 +1,9 @@
 import User from "../user/model"
 
-export const register = async (newUser: any) => {
-  const findEmail = await User.findOne({ email: newUser.email }).exec()
-
-  if (findEmail) {
-    return { error: "Email already in use." }
-  }
-  const findUsername = await User.findOne({ username: newUser.username }).exec()
-
-  if (findUsername) {
-    return { error: "Username already in use." }
-  }
-
-  const userCreated = await User.create(newUser)
-  return { user: userCreated }
+export const register = async (user: any) => {
+  const userCreated = await User.create(user)
+  console.log(userCreated, "en repository")
+  return userCreated
 }
 
 export const findEmail = async (email: string) => {
@@ -21,9 +11,10 @@ export const findEmail = async (email: string) => {
     .select("+password")
     .select("+role")
     .exec()
+  return findEmail
+}
 
-  if (!findEmail) {
-    return { error: "Email not found" }
-  }
-  return { userLogged: findEmail }
+export const findUsername = async (username: string) => {
+  const usernameFind = await User.findOne({ username: username }).exec()
+  return usernameFind
 }

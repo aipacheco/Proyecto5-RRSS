@@ -5,6 +5,6 @@ const authRouter = express.Router()
 
 // endpoint de creación de usuario
 authRouter.post("/register", Controller.register)
-authRouter.post("/login", Controller.login)
+// authRouter.post("/login", Controller.login)
 
 export default authRouter
