@@ -5,7 +5,6 @@ export const register = async (user: any) => {
   console.log(userCreated, "en repository")
   return userCreated
 }
-
 export const findEmail = async (email: string) => {
   const findEmail = await User.findOne({ email: email })
     .select("+password")
@@ -13,7 +12,6 @@ export const findEmail = async (email: string) => {
     .exec()
   return findEmail
 }
-
 export const findUsername = async (username: string) => {
   const usernameFind = await User.findOne({ username: username }).exec()
   return usernameFind

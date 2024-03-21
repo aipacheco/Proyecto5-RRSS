@@ -1,25 +1,26 @@
 import { Request, Response } from "express"
 import * as Repository from "./repository"
 import { validateUser } from "./services"
-import Jwt from "jsonwebtoken"
 
 export const register = async (req: Request, res: Response) => {
   const userValidated = validateUser(req)
-
   try {
     const user = await Repository.register(userValidated)
-    console.log(user, "user en controller tras pasar por repository")
-
     return res.status(201).json({
       success: true,
       message: "User created",
       data: user,
     })
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error,
-    })
+  } catch (error: any) {
+    const { status, message } = error
+    if (status) {
+      return res.status(status).json({ error: message })
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: error,
+      })
+    }
   }
 }
 
