@@ -103,9 +103,9 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
    	 ```
   - GET PROFILE
 
-        GET https://h8ter.zeabur.app/api/users/profile
+        GET https://h8ter.zeabur.app/api/users/:username
 
-    El usuario podrá ver su propio perfil
+    Se puede ver los perfiles de usuarios excluyendo datos sensibles como el email o el rol
     
   - UPDATE PROFILE
 

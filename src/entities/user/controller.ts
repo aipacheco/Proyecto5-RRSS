@@ -53,10 +53,11 @@ export const getUsers = async (req: Request, res: Response) => {
   }
 }
 
-export const getMyProfile = async (req: Request, res: Response) => {
-  const { userId } = req.tokenData
+export const getPublicProfile = async (req: Request, res: Response) => {
+  const { username } = req.params
+
   try {
-    const { user, error } = await Repository.getMyProfile(userId)
+    const { user, error } = await Repository.getPublicProfile(username)
     if (error) {
       return res.status(400).json({
         success: false,
@@ -66,7 +67,7 @@ export const getMyProfile = async (req: Request, res: Response) => {
     if (user) {
       return res.status(200).json({
         success: true,
-        message: "Your profile",
+        message: "Perfil",
         data: user,
       })
     }

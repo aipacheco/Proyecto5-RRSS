@@ -9,8 +9,13 @@ export const getUsers = async () => {
   return { user: users }
 }
 
-export const getMyProfile = async (userId: number) => {
-  const myProfile = await User.findById(userId)
+export const getPublicProfile = async (username: String) => {
+  const myProfile = await User.findOne({ username: username })
+    .select("-email")
+    .select("-isActive")
+    .select("-role")
+
+
   if (!myProfile) {
     return { error: "profile not found" }
   }
