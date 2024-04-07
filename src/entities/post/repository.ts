@@ -90,11 +90,30 @@ export const likePost = async (postId: string, userId: any) => {
   if (content) {
     message = "dislike"
     post.likes = post.likes.filter((id) => id != userId)
-  }
-else {
+  } else {
     message = "like"
     post.likes.push(userId)
   }
   const updatedPost = await post.save()
   return { post: updatedPost, message }
+}
+export const getPublicPosts = async () => {
+  const publicPosts = await Post.aggregate([
+    {
+      $lookup: {
+        from: "users",
+        localField: "author",
+        foreignField: "_id",
+        as: "userDetails",
+      },
+    },
+    { $unwind: "$userDetails" },
+    { $match: { "userDetails.isPublic": true } },
+  ])
+
+  if (!publicPosts || publicPosts.length === 0) {
+    return { error: "No public posts found" }
+  }
+
+  return { post: publicPosts }
 }

@@ -17,6 +17,22 @@ const UserSchema = new Schema(
       required: true,
       select: false // Esto hace que la contraseña no se devuelva por defecto
     },
+    avatar:{
+      type: String,
+      default: ""
+    },
+    banner:{
+      type: String,
+      default: ""
+    },
+    isActive:{
+      type: Boolean, 
+      default: true
+    },
+    isPublic:{
+      type: Boolean, 
+      default: true
+    },
     role: {
       type: String,
       enum: ["user", "admin", "super_admin"],

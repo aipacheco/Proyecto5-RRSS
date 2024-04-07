@@ -112,7 +112,6 @@ export const updatePost = async (req: Request, res: Response) => {
 export const getMyPosts = async (req: Request, res: Response) => {
   const { userId } = req.tokenData
   const { postId, content } = req.body
-
   try {
     const { post, error } = await Repository.getMyPosts(userId)
     if (error) {
@@ -139,7 +138,7 @@ export const getMyPosts = async (req: Request, res: Response) => {
 
 export const getAllPosts = async (req: Request, res: Response) => {
   try {
-    const { post, error } = await Repository.getAllPosts()
+    const { post, error } = await Repository.getPublicPosts()
     if (error) {
       return res.status(400).json({
         success: false,
@@ -203,6 +202,30 @@ export const likePost = async (req: Request, res: Response) => {
       return res.status(200).json({
         success: true,
         message: `You ${message} this post`,
+        data: post,
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    })
+  }
+}
+export const getPublicPosts = () => async (req: Request, res: Response) => {
+console.log("hola")
+  try {
+    const { post, error } = await Repository.getPublicPosts()
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      })
+    }
+    if (post) {
+      return res.status(200).json({
+        success: true,
+        message: "All posts",
         data: post,
       })
     }
