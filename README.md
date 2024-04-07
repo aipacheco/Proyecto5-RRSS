@@ -20,7 +20,7 @@
 
 Los usuarios podrán registrarse en la aplicación, iniciar sesión y acceder a su área
 personal. Dentro de su área, podrán postear sus ideas. También podrán ver los posts de usuarios y darles o quitarles like a los mismos.
-El backend de esta API está desplegado en [Enlace a fl0](https://rrss-dev-fkcm.2.ie-1.fl0.io/hello)
+El backend de esta API está desplegado en [Enlace a Zeabur](https://h8ter.zeabur.app/hello)
 
 ## Objetivo
 
