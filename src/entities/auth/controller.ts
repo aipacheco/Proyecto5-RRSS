@@ -94,7 +94,7 @@ export const login = async (req: Request, res: Response) => {
               success: true,
               message: "User logged",
               token: token,
-              username: userLogged.username
+              role: userLogged.role
             })
           } else {
             return res.status(401).json({
