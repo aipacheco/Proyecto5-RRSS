@@ -47,7 +47,7 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
 
   - REGISTER
 
-            POST https://rrss-dev-fkcm.2.ie-1.fl0.io/api/auth/register
+            POST https://h8ter.zeabur.app/api/auth/register
 
     body:
 
@@ -61,7 +61,7 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
 
   - LOGIN
 
-          POST https://rrss-dev-fkcm.2.ie-1.fl0.io/api/auth/login
+          POST https://h8ter.zeabur.app/api/auth/login
 
     body:
 
@@ -76,14 +76,14 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
 
   - GET
 
-            GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/users
+            GET https://h8ter.zeabur.app/api/users
 
     El usuario tiene que ser super_admin para ver todos los usuarios {"email":"superadmin@superadmin.com", "password":"123456789"}
 
 
   - GET BY EMAIL
 
-            GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/users?email=example@email.com
+            GET https://h8ter.zeabur.app/api/users?email=example@email.com
 
     El usuario tiene que ser super_admin para ver todos los usuarios y la búsqueda le devolverá el usuario por email
 
@@ -103,13 +103,13 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
    	 ```
   - GET PROFILE
 
-        GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/users/profile
+        GET https://h8ter.zeabur.app/api/users/profile
 
     El usuario podrá ver su propio perfil
     
   - UPDATE PROFILE
 
-        PUT https://rrss-dev-fkcm.2.ie-1.fl0.io/api/users/profile
+        PUT https://h8ter.zeabur.app/api/users/profile
 
     El usuario podrá modificar su propio perfil, cambiando su nombre de usuario
     
@@ -122,14 +122,14 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
 
   - GET
 
-            GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/posts
+            GET https://h8ter.zeabur.app/api/posts
 
-    Se muestran todos los posts
+    Se muestran todos los posts de los usuarios públicos
     
 
   - CREAR POST
 
-            POST https://rrss-dev-fkcm.2.ie-1.fl0.io/api/posts
+            POST https://h8ter.zeabur.app/api/posts
 
     El usuario tiene que estar logado para crear posts
 
@@ -140,20 +140,20 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
 
   - GET MY POSTS
 
-            GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/posts/own
+            GET https://h8ter.zeabur.app/api/posts/own
 
     El usuario puede ver todos sus posts
 
 
   - GET SINGLE POST
 
-          GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/posts/id
+          GET https://h8ter.zeabur.app/api/posts/id
 
     El usuario puede ver un post en concreto
 
   - UPDATE POST
 
-          PUT https://rrss-dev-fkcm.2.ie-1.fl0.io/api/posts/id
+          PUT https://h8ter.zeabur.app/api/posts/id
 
     El usuario puede modificar uno de sus posts
 
@@ -166,19 +166,19 @@ Este proyecto requería una API funcional conectada a una base de datos con dos 
     ```
   - DELETE POST
 
-          PUT https://rrss-dev-fkcm.2.ie-1.fl0.io/api/posts/id
+          PUT https://h8ter.zeabur.app/api/posts/id
 
     El usuario puede borrar uno de sus posts
 
   - GET USER POST
 
-          GET https://rrss-dev-fkcm.2.ie-1.fl0.io/api/users/posts/user_id
+          GET https://h8ter.zeabur.app/api/users/posts/user_id
 
     Trae todos los posts de un usuario   
 
   - LIKE/DISLIKE POST
 
-          PUT https://rrss-dev-fkcm.2.ie-1.fl0.io/api/posts/like/post_id
+          PUT https://h8ter.zeabur.app/api/posts/like/post_id
 
     Un usuario puede darle like o quitárselo a un post  
 
