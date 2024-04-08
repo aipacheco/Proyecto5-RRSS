@@ -15,7 +15,6 @@ export const getPublicProfile = async (username: String) => {
     .select("-isActive")
     .select("-role")
 
-
   if (!myProfile) {
     return { error: "profile not found" }
   }
@@ -64,4 +63,22 @@ export const getUserByEmail = async (email: string) => {
     return { error: "email not found" }
   }
   return { data: findEmail }
+}
+
+export const updateBanner = async (userId: number, bannerUrl: string) => {
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { banner: bannerUrl },
+    { new: true }
+  )
+  return { updated: updatedUser }
+}
+
+export const updateAvatar = async (userId: number, avatarUrl: string) => {
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { avatar: avatarUrl },
+    { new: true }
+  )
+  return { updated: updatedUser }
 }

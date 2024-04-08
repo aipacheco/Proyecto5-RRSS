@@ -19,7 +19,7 @@ const UserSchema = new Schema(
     },
     avatar:{
       type: String,
-      default: ""
+      default: "https://res.cloudinary.com/dptbxi3iu/image/upload/v1712589103/H8ter/nbwcf1jpsn18l5msijmh.jpg"
     },
     banner:{
       type: String,
