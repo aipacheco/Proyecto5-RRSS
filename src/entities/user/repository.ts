@@ -73,3 +73,12 @@ export const updateBanner = async (userId: number, bannerUrl: string) => {
   )
   return { updated: updatedUser }
 }
+
+export const updateAvatar = async (userId: number, avatarUrl: string) => {
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { avatar: avatarUrl },
+    { new: true }
+  )
+  return { updated: updatedUser }
+}

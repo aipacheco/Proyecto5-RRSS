@@ -13,9 +13,7 @@ userRouter.get("/", auth, isSuperAdmin, Controller.getUsers)
 userRouter.get("/:username", Controller.getPublicProfile)
 userRouter.put("/profile", auth, Controller.updateProfile)
 userRouter.get("/posts/:userId", Controller.getUserPosts)
-userRouter.put("/banner",auth,
-  upload.single("banner"),
-  Controller.updateBanner
-)
+userRouter.put("/banner",auth,upload.single("banner"), Controller.updateBanner)
+userRouter.put("/avatar",auth, upload.single("avatar"), Controller.updateAvatar)
 
 export default userRouter
