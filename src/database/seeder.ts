@@ -38,7 +38,7 @@ const createSeedData = async () => {
       const postPromises = Array.from({ length: 10 }, () => {
         const post = new Post({
           author: user._id,
-          content: faker.lorem.paragraphs(),
+          content: faker.lorem.sentence(),
           publishedAt: faker.date.past(),
           //añadir likes
           likes: Array.from(

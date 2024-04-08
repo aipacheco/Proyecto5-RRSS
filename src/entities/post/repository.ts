@@ -109,6 +109,12 @@ export const getPublicPosts = async () => {
     },
     { $unwind: "$userDetails" },
     { $match: { "userDetails.isPublic": true } },
+    {
+      $project: {
+        content: 1,
+        authorUsername: "$userDetails.username",
+      },
+    },
   ])
 
   if (!publicPosts || publicPosts.length === 0) {
