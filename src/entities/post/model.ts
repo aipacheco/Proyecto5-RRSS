@@ -8,12 +8,14 @@ const PostSchema = new Schema(
       ref: "User",
       required: true,
     },
-
     content: {
       type: String,
       required: true,
     },
-
+    image: {
+      type: String,
+      default: ""
+    },
     publishedAt: {
       type: Date,
       default: Date.now,
