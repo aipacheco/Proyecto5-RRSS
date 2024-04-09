@@ -113,6 +113,8 @@ export const getPublicPosts = async () => {
       $project: {
         content: 1,
         authorUsername: "$userDetails.username",
+        publishedAt: 1,
+        avatar: "$userDetails.avatar"
       },
     },
   ])
