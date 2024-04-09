@@ -115,7 +115,8 @@ export const getPublicPosts = async () => {
         authorUsername: "$userDetails.username",
         publishedAt: 1,
         avatar: "$userDetails.avatar",
-        image: 1
+        image: 1, 
+        likes: 1
       },
     },
   ])
