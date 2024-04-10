@@ -71,11 +71,14 @@ export const getAllPosts = async () => {
 }
 
 export const getPostById = async (postId: string) => {
-  const postFind = await Post.findById(postId)
+  const postFind = await Post.findById(postId).populate("author", "avatar")
   if (!postFind) {
     return { error: "post not found" }
   }
+  // console.log(postFind.author.avatar)
+  // const avatar = postFind.author.avatar
   return { post: postFind }
+  // eturn { post: postFind, avatar: avatar }
 }
 
 export const likePost = async (postId: string, userId: any) => {
@@ -115,8 +118,8 @@ export const getPublicPosts = async () => {
         authorUsername: "$userDetails.username",
         publishedAt: 1,
         avatar: "$userDetails.avatar",
-        image: 1, 
-        likes: 1
+        image: 1,
+        likes: 1,
       },
     },
   ])
