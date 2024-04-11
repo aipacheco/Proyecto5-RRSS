@@ -82,18 +82,18 @@ export const login = async (req: Request, res: Response) => {
               {
                 userId: userLogged.id,
                 role: userLogged.role,
-                username: userLogged.username
+                username: userLogged.username,
               },
               process.env.JWT_SECRET as string,
               {
-                expiresIn: "2h",
+                expiresIn: 300,
               }
             )
             // devolver datos del usuario y el token
             return res.status(200).json({
               success: true,
               message: "User logged",
-              token: token
+              token: token,
             })
           } else {
             return res.status(401).json({
