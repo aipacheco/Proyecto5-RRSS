@@ -162,7 +162,6 @@ export const getAllPosts = async (req: Request, res: Response) => {
 
 export const getPostById = async (req: Request, res: Response) => {
   const postId = req.params.id
-
   try {
     const { post, error } = await Repository.getPostById(postId)
     if (error) {

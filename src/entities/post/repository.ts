@@ -71,14 +71,12 @@ export const getAllPosts = async () => {
 }
 
 export const getPostById = async (postId: string) => {
-  const postFind = await Post.findById(postId).populate("author", "avatar")
+  //en el populate se ponen las propiedades separadas con espacio para que no de error
+  const postFind = await Post.findById(postId).populate("author", "avatar username")
   if (!postFind) {
     return { error: "post not found" }
   }
-  // console.log(postFind.author.avatar)
-  // const avatar = postFind.author.avatar
   return { post: postFind }
-  // eturn { post: postFind, avatar: avatar }
 }
 
 export const likePost = async (postId: string, userId: any) => {
