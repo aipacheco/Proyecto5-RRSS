@@ -105,7 +105,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                             userId: userLogged.id,
                             role: userLogged.role,
                         }, process.env.JWT_SECRET, {
-                            expiresIn: "1m",
+                            expiresIn: "5m",
                         });
                         // devolver datos del usuario y el token
                         return res.status(200).json({
