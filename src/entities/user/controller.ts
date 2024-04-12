@@ -62,7 +62,7 @@ export const getPublicProfile = async (req: Request, res: Response) => {
     if (error) {
       return res.status(400).json({
         success: false,
-        message: error,
+        message: "Usuario no encontrado",
       })
     }
     if (user) {
