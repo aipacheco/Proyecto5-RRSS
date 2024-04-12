@@ -86,7 +86,7 @@ export const login = async (req: Request, res: Response) => {
               },
               process.env.JWT_SECRET as string,
               {
-                expiresIn: 300,
+                expiresIn: "730h",
               }
             )
             // devolver datos del usuario y el token
