@@ -26,19 +26,20 @@ export const getPublicProfile = async (username: string) => {
   return { user: profileWithPosts }
 }
 
-export const updateProfile = async (userId: number, username: string) => {
+export const updateProfile = async (
+  userId: number,
+  description: string,
+  avatar: String,
+  banner: String
+) => {
   const myProfile = await User.findById(userId)
   if (!myProfile) {
     return { error: "profile not found" }
   }
-  const usernameExisting = await User.findOne({ username: username })
-  if (usernameExisting) {
-    return { error: "username duplicated" }
-  }
 
   const updatedProfile = await User.findOneAndUpdate(
     { _id: userId },
-    { username: username },
+    { description: description, avatar: avatar, banner: banner },
     { new: true }
   )
   return { updated: updatedProfile }
@@ -68,22 +69,4 @@ export const getUserByEmail = async (email: string) => {
     return { error: "email not found" }
   }
   return { data: findEmail }
-}
-
-export const updateBanner = async (userId: number, bannerUrl: string) => {
-  const updatedUser = await User.findByIdAndUpdate(
-    userId,
-    { banner: bannerUrl },
-    { new: true }
-  )
-  return { updated: updatedUser }
-}
-
-export const updateAvatar = async (userId: number, avatarUrl: string) => {
-  const updatedUser = await User.findByIdAndUpdate(
-    userId,
-    { avatar: avatarUrl },
-    { new: true }
-  )
-  return { updated: updatedUser }
 }
