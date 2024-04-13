@@ -75,26 +75,28 @@ export const login = async (req: Request, res: Response) => {
         const hashedPassword = userLogged.password
 
         if (hashedPassword) {
-          const isValidPassword = bcrypt.compareSync(password, hashedPassword)
-          if (isValidPassword) {
-            //creacion del token
-            const token = Jwt.sign(
-              {
-                userId: userLogged.id,
-                role: userLogged.role,
-                username: userLogged.username,
-              },
-              process.env.JWT_SECRET as string,
-              {
-                expiresIn: "730h",
-              }
-            )
+          if (typeof hashedPassword === "string") {
+            const isValidPassword = bcrypt.compareSync(password, hashedPassword)
+
+            if (isValidPassword) {
+              //creacion del token
+              const token = Jwt.sign(
+                {
+                  userId: userLogged.id,
+                  role: userLogged.role,
+                  username: userLogged.username,
+                },
+                process.env.JWT_SECRET as string,
+                {
+                  expiresIn: "730h",
+                }
+              )
             // devolver datos del usuario y el token
             return res.status(200).json({
               success: true,
               message: "User logged",
               token: token,
-            })
+            })}
           } else {
             return res.status(401).json({
               success: false,
