@@ -13,7 +13,7 @@ export const getPublicProfile = async (username: String) => {
   const myProfile = await User.findOne({ username: username })
     .select("-email")
     .select("-isActive")
-    .populate("posts")
+    .populate("Post")
 
   if (!myProfile) {
     return { error: "profile not found" }
