@@ -9,16 +9,21 @@ export const getUsers = async () => {
   return { user: users }
 }
 
-export const getPublicProfile = async (username: String) => {
-  const myProfile = await User.findOne({ username: username })
-    .select("-email")
-    .select("-isActive")
-    .populate("Post")
-
-  if (!myProfile) {
-    return { error: "profile not found" }
+export const getPublicProfile = async (username: string) => {
+  const userProfile = await User.findOne({ username }).select(
+    "-email -isActive"
+  )
+  if (!userProfile) {
+    return { error: "Perfil no encontrado" }
   }
-  return { user: myProfile }
+  const userPosts = await Post.find({ author: userProfile._id })
+
+  const profileWithPosts = {
+    ...userProfile.toObject(),
+    posts: userPosts,
+  }
+
+  return { user: profileWithPosts }
 }
 
 export const updateProfile = async (userId: number, username: string) => {
