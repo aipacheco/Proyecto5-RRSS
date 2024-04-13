@@ -87,18 +87,19 @@ export const getPublicProfile = async (req: Request, res: Response) => {
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
-  const { description } = req.body
+
+  const description  = req.body.description
   const { userId } = req.tokenData
+  const uploadPromises: Record<string, Promise<any>> = {}
   try {
-    const uploadPromises: any[] = []
+    // const uploadPromises: any[] = []
     const files = req.files as Files
     if (files) {
-      // Itera sobre cada archivo en req.files
       Object.keys(files).forEach((key) => {
-        const fileArray = files[key as keyof Files] // Asegura que key es un índice válido para Files
+        const fileArray = files[key as keyof Files]
         if (fileArray && fileArray.length > 0) {
-          const file = fileArray[0] // Ahora file es de tipo Express.Multer.File
-          const uploadPromise = new Promise((resolve, reject) => {
+          const file = fileArray[0]
+          uploadPromises[key] = new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
               { folder: "H8ter" },
               (error, result) => {
@@ -108,18 +109,23 @@ export const updateProfile = async (req: Request, res: Response) => {
             )
             uploadStream.end(file.buffer)
           })
-          uploadPromises.push(uploadPromise)
         }
       })
+
       // Espera a que todas las promesas de carga se resuelvan
-      const results = await Promise.all(uploadPromises)
-      // results es un array de resultados de Cloudinary, puedes procesar cada uno como necesites
-      // results.forEach((result, index) => {
-      // console.log("las urls a ver si es verdad", result, index) // Imprime la URL segura de cada imagen cargada
-      // })
-      const avatar = results[0].secure_url
-      const banner = results[1].secure_url
-      // console.log("avatar la forma del agua", avatar, "el banner", banner)
+      const results = await Promise.all(Object.values(uploadPromises))
+      const keys = Object.keys(uploadPromises)
+
+      let avatar = ""
+      let banner = ""
+
+      if (results[keys.indexOf("avatar")]) {
+        avatar = results[keys.indexOf("avatar")].secure_url
+      }
+
+      if (results[keys.indexOf("banner")]) {
+        banner = results[keys.indexOf("banner")].secure_url
+      }
 
       const { updated, error } = await Repository.updateProfile(
         userId,
@@ -127,7 +133,6 @@ export const updateProfile = async (req: Request, res: Response) => {
         avatar,
         banner
       )
-
       if (error) {
         return res.status(400).json({
           success: false,
@@ -146,7 +151,6 @@ export const updateProfile = async (req: Request, res: Response) => {
         userId,
         description
       )
-
       if (error) {
         return res.status(400).json({
           success: false,
