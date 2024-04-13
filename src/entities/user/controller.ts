@@ -141,6 +141,25 @@ export const updateProfile = async (req: Request, res: Response) => {
           data: updated,
         })
       }
+    } else {
+      const { updated, error } = await Repository.updateDescription(
+        userId,
+        description
+      )
+
+      if (error) {
+        return res.status(400).json({
+          success: false,
+          message: error,
+        })
+      }
+      if (updated) {
+        return res.status(201).json({
+          success: true,
+          message: "Your profile was updated",
+          data: updated,
+        })
+      }
     }
   } catch (error) {
     return res.status(500).json({
@@ -176,4 +195,3 @@ export const getUserPosts = async (req: Request, res: Response) => {
     })
   }
 }
-
