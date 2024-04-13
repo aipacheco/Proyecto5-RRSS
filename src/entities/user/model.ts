@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose"
+import { Schema, Types, model } from "mongoose"
 
 const UserSchema = new Schema(
   {
@@ -42,7 +42,10 @@ const UserSchema = new Schema(
       enum: ["user", "admin", "super_admin"],
       default: "user",
     },
-    // post:[]
+    posts: [{
+      type: Types.ObjectId,
+      ref: 'Post'
+    }]
   },
   {
     timestamps: true,
