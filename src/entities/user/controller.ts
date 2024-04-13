@@ -2,6 +2,12 @@ import { Request, Response } from "express"
 import * as Repository from "./repository"
 import { UsernameRequiredLength } from "./services"
 import { v2 as cloudinary } from "cloudinary"
+import { UploadApiResponse } from "cloudinary"
+
+interface Files {
+  banner?: Express.Multer.File[]
+  avatar?: Express.Multer.File[]
+}
 
 export const getUsers = async (req: Request, res: Response) => {
   const email = req.query.email as string
@@ -81,38 +87,45 @@ export const getPublicProfile = async (req: Request, res: Response) => {
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
-  const { username } = req.body
+  const { description } = req.body
   const { userId } = req.tokenData
-
   try {
-    const existingUsername = await Repository.findUsername(userId)
-
-    // Verificar si los campos no han cambiado
-    if (existingUsername === username) {
-      return res.status(400).json({
-        success: false,
-        message: "No changes detected. Your username was not updated",
+    const uploadPromises: any[] = []
+    const files = req.files as Files
+    if (files) {
+      // Itera sobre cada archivo en req.files
+      Object.keys(files).forEach((key) => {
+        const fileArray = files[key as keyof Files] // Asegura que key es un índice válido para Files
+        if (fileArray && fileArray.length > 0) {
+          const file = fileArray[0] // Ahora file es de tipo Express.Multer.File
+          const uploadPromise = new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+              { folder: "H8ter" },
+              (error, result) => {
+                if (error) reject(error)
+                else resolve(result)
+              }
+            )
+            uploadStream.end(file.buffer)
+          })
+          uploadPromises.push(uploadPromise)
+        }
       })
-    }
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error,
-    })
-  }
+      // Espera a que todas las promesas de carga se resuelvan
+      const results = await Promise.all(uploadPromises)
+      // results es un array de resultados de Cloudinary, puedes procesar cada uno como necesites
+      // results.forEach((result, index) => {
+      // console.log("las urls a ver si es verdad", result, index) // Imprime la URL segura de cada imagen cargada
+      // })
+      const avatar = results[0].secure_url
+      const banner = results[1].secure_url
+      // console.log("avatar la forma del agua", avatar, "el banner", banner)
 
-  const { error, success } = UsernameRequiredLength(username, 8, 25)
-  if (error) {
-    return res.status(400).json({
-      success: false,
-      message: error,
-    })
-  }
-  if (success) {
-    try {
       const { updated, error } = await Repository.updateProfile(
         userId,
-        username
+        description,
+        avatar,
+        banner
       )
 
       if (error) {
@@ -128,12 +141,12 @@ export const updateProfile = async (req: Request, res: Response) => {
           data: updated,
         })
       }
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: error,
-      })
     }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    })
   }
 }
 
@@ -164,94 +177,3 @@ export const getUserPosts = async (req: Request, res: Response) => {
   }
 }
 
-export const updateBanner = async (req: Request, res: Response) => {
-  const { userId } = req.tokenData
-  try {
-    // console.log("hola", req.file)
-    if (!req.file) {
-      return res.status(400).send("No file uploaded.")
-    }
-    // crea una promesa de upload_stream de Cloudinary
-    const result: any = await new Promise((resolve, reject) => {
-      // Crea un stream de carga a Cloudinary
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder: "H8ter",
-        },
-        (error, result) => {
-          if (error) {
-            reject(error) // si hay un error, rechaza la promesa
-          } else {
-            resolve(result) // si todo va bien, resuelve la promesa con el resultado
-          }
-        }
-      )
-      // envia el buffer del archivo a Cloudinary
-      uploadStream.end(req.file!.buffer)
-    })
-    // la URL de la imagen estará en el campo 'secure_url'
-    const imageUrl = result.secure_url
-    // console.log(imageUrl)
-
-    const { updated } = await Repository.updateBanner(userId, imageUrl)
-
-    if (updated) {
-      return res.status(200).json({
-        success: true,
-        message: "Posts by user",
-        data: updated,
-      })
-    }
-  } catch (error) {
-    console.error("el error:", error)
-    return res
-      .status(500)
-      .json({ success: false, message: "Internal server error" })
-  }
-}
-
-export const updateAvatar = async (req: Request, res: Response) => {
-  const { userId } = req.tokenData
-  try {
-    // console.log("hola", req.file)
-    if (!req.file) {
-      return res.status(400).send("No file uploaded.")
-    }
-    // crea una promesa de upload_stream de Cloudinary
-    const result: any = await new Promise((resolve, reject) => {
-      // Crea un stream de carga a Cloudinary
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder: "H8ter",
-        },
-        (error, result) => {
-          if (error) {
-            reject(error) // si hay un error, rechaza la promesa
-          } else {
-            resolve(result) // si todo va bien, resuelve la promesa con el resultado
-          }
-        }
-      )
-      // envia el buffer del archivo a Cloudinary
-      uploadStream.end(req.file!.buffer)
-    })
-    // la URL de la imagen estará en el campo 'secure_url'
-    const imageUrl = result.secure_url
-    // console.log(imageUrl)
-
-    const { updated } = await Repository.updateAvatar(userId, imageUrl)
-
-    if (updated) {
-      return res.status(200).json({
-        success: true,
-        message: "Posts by user",
-        data: updated,
-      })
-    }
-  } catch (error) {
-    console.error("el error:", error)
-    return res
-      .status(500)
-      .json({ success: false, message: "Internal server error" })
-  }
-}
