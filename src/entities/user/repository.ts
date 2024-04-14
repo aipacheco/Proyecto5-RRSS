@@ -28,26 +28,33 @@ export const getPublicProfile = async (username: string) => {
 
 export const updateProfile = async (
   userId: number,
-  description: string,
-  avatar: String,
-  banner: String
+  description?: string,
+  avatar?: string,
+  banner?: string
 ) => {
   const myProfile = await User.findById(userId)
   if (!myProfile) {
     return { error: "profile not found" }
   }
 
+  const updateData: { description?: string; avatar?: string; banner?: string } =
+    {}
+  if (description) updateData.description = description
+  if (avatar) updateData.avatar = avatar
+  if (banner) updateData.banner = banner
+
   const updatedProfile = await User.findOneAndUpdate(
     { _id: userId },
-    { description: description, avatar: avatar, banner: banner },
+    updateData,
     { new: true }
   )
+
   return { updated: updatedProfile }
 }
 
 export const updateDescription = async (
   userId: number,
-  description: string,
+  description: string
 ) => {
   const myProfile = await User.findById(userId)
   if (!myProfile) {
