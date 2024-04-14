@@ -102,7 +102,7 @@ export const inactiveUser = async (userId: string) => {
   }
 
   if (profile.role === "super_admin") {
-    return { error: "user is super-admin, can't delete" }
+    return { error: "No puedes borrar a un administrador" }
   }
 
   const userInactive = await User.findOneAndUpdate(
