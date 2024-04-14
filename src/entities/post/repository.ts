@@ -27,7 +27,7 @@ export const deletePost = async (postId: string, userId: number) => {
   // para devolver los otros posts del usuario
   const remainingPosts = await Post.find({ author: userId })
   if (remainingPosts.length === 0) {
-    return { message: "No more posts from this user." }
+    return { message: "Ultimo post borrado" }
   }
   return { post: remainingPosts }
 }
