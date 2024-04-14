@@ -94,3 +94,21 @@ export const getUserByEmail = async (email: string) => {
   }
   return { data: findEmail }
 }
+
+export const inactiveUser = async (userId: string) => {
+  const profile = await User.findById(userId)
+  if (!profile) {
+    return { error: "profile not found" }
+  }
+
+  if (profile.role === "super_admin") {
+    return { error: "user is super-admin, can't delete" }
+  }
+
+  const userInactive = await User.findOneAndUpdate(
+    { _id: userId },
+    { isActive: false },
+    { new: true }
+  )
+  return { user: userInactive }
+}

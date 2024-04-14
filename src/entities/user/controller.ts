@@ -87,8 +87,7 @@ export const getPublicProfile = async (req: Request, res: Response) => {
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
-
-  const description  = req.body.description
+  const description = req.body.description
   const { userId } = req.tokenData
   const uploadPromises: Record<string, Promise<any>> = {}
   try {
@@ -190,6 +189,30 @@ export const getUserPosts = async (req: Request, res: Response) => {
         success: true,
         message: "Posts by user",
         data: post,
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    })
+  }
+}
+export const inactiveUser = async (req: Request, res: Response) => {
+  const  userId  = req.params.id
+  try {
+    const { user, error } = await Repository.inactiveUser(userId)
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      })
+    }
+    if (user) {
+      return res.status(201).json({
+        success: true,
+        message: "Usuario dado de baja correctamente",
+        data: user,
       })
     }
   } catch (error) {
