@@ -11,7 +11,7 @@ const userRouter = express.Router()
 
 userRouter.get("/", auth, isSuperAdmin, Controller.getUsers)
 userRouter.get("/:username", Controller.getPublicProfile)
-userRouter.put("/profile", auth,upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'banner', maxCount: 1 }, { name: 'description' }]), Controller.updateProfile)
+userRouter.put("/profile", auth,upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'banner', maxCount: 1 }, { name: 'description', maxCount: 1 }]), Controller.updateProfile)
 userRouter.get("/posts/:userId", Controller.getUserPosts)
 //ejemplo de uso con single file
 // userRouter.put("/avatar",auth, upload.single("avatar"), Controller.updateAvatar)

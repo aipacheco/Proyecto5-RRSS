@@ -23,11 +23,13 @@ export const deletePost = async (postId: string, userId: number) => {
   if (!author) {
     return { error: "unauthorized" }
   }
-  const postDeleted = await Post.findOneAndDelete({
-    _id: postFind,
-    author: author,
-  })
-  return { post: postDeleted }
+  await Post.findOneAndDelete({ _id: postId, author: userId })
+  // para devolver los otros posts del usuario
+  const remainingPosts = await Post.find({ author: userId })
+  if (remainingPosts.length === 0) {
+    return { message: "No more posts from this user." }
+  }
+  return { post: remainingPosts }
 }
 
 export const updatePost = async (
@@ -72,7 +74,10 @@ export const getAllPosts = async () => {
 
 export const getPostById = async (postId: string) => {
   //en el populate se ponen las propiedades separadas con espacio para que no de error
-  const postFind = await Post.findById(postId).populate("author", "avatar username")
+  const postFind = await Post.findById(postId).populate(
+    "author",
+    "avatar username"
+  )
   if (!postFind) {
     return { error: "post not found" }
   }

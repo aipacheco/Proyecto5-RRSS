@@ -43,9 +43,6 @@ export const createPost = async (req: Request, res: Response) => {
 export const deletePost = async (req: Request, res: Response) => {
   const { id } = req.params
   const { userId } = req.tokenData
-
-  //todo: validaciones
-
   try {
     const { post, error } = await Repository.deletePost(id, userId)
     if (error) {
@@ -212,7 +209,7 @@ export const likePost = async (req: Request, res: Response) => {
   }
 }
 export const getPublicPosts = () => async (req: Request, res: Response) => {
-console.log("hola")
+  console.log("hola")
   try {
     const { post, error } = await Repository.getPublicPosts()
     if (error) {
