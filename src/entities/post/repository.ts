@@ -5,7 +5,7 @@ import { ObjectId } from "mongoose"
 export const createPost = async (userId: number, content: string) => {
   const ID = await User.findById(userId)
   if (!ID) {
-    return { error: "user not found" }
+    return { error: "Usuario no encontrado" }
   }
   const newPost = await Post.create({
     author: userId,
@@ -17,11 +17,11 @@ export const createPost = async (userId: number, content: string) => {
 export const deletePost = async (postId: string, userId: number) => {
   const postFind = await Post.findById(postId)
   if (!postFind) {
-    return { error: "post not found" }
+    return { error: "Post no encontrado" }
   }
   const author = await Post.findOne({ _id: postId, author: userId })
   if (!author) {
-    return { error: "unauthorized" }
+    return { error: "No tienes autorización" }
   }
   await Post.findOneAndDelete({ _id: postId, author: userId })
   // para devolver los otros posts del usuario
@@ -39,11 +39,11 @@ export const updatePost = async (
 ) => {
   const postFind = await Post.findById(postId)
   if (!postFind) {
-    return { error: "post not found" }
+    return { error: "Post no encontrado" }
   }
   const author = await Post.findOne({ _id: postId, author: userId })
   if (!author) {
-    return { error: "unauthorized" }
+    return { error: "No tienes autorización" }
   }
   const postUpdated = await Post.findOneAndUpdate(
     { _id: postId },
@@ -56,7 +56,7 @@ export const updatePost = async (
 export const getMyPosts = async (userId: number) => {
   const userID = await User.findById(userId)
   if (!userID) {
-    return { error: "user not found" }
+    return { error: "Usuario no encontrado" }
   }
   const allMyPosts = await Post.find({
     author: userID,
@@ -67,7 +67,7 @@ export const getMyPosts = async (userId: number) => {
 export const getAllPosts = async () => {
   const allPosts = await Post.find({})
   if (!allPosts) {
-    return { error: "No posts found" }
+    return { error: "No hay posts" }
   }
   return { post: allPosts }
 }
@@ -79,7 +79,7 @@ export const getPostById = async (postId: string) => {
     "avatar username"
   )
   if (!postFind) {
-    return { error: "post not found" }
+    return { error: "Post no encontrado" }
   }
   return { post: postFind }
 }
@@ -87,7 +87,7 @@ export const getPostById = async (postId: string) => {
 export const likePost = async (postId: string, userId: any) => {
   const post = await Post.findById(postId)
   if (!post) {
-    return { error: "Post not found" }
+    return { error: "Post no encontrado" }
   }
   // Comprobar si el usuario ya ha dado like al post
   let content = post.likes.includes(userId)
@@ -128,7 +128,7 @@ export const getPublicPosts = async () => {
   ])
 
   if (!publicPosts || publicPosts.length === 0) {
-    return { error: "No public posts found" }
+    return { error: "No hay posts públicos" }
   }
 
   return { post: publicPosts }

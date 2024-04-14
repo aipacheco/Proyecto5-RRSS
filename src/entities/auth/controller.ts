@@ -94,13 +94,13 @@ export const login = async (req: Request, res: Response) => {
             // devolver datos del usuario y el token
             return res.status(200).json({
               success: true,
-              message: "User logged",
+              message: "Usuario conectado",
               token: token,
             })}
           } else {
             return res.status(401).json({
               success: false,
-              message: "Invalid password",
+              message: "Contraseña incorrecta",
             })
           }
         }

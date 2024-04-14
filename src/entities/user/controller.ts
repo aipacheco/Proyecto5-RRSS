@@ -19,14 +19,14 @@ export const getUsers = async (req: Request, res: Response) => {
       if (data) {
         return res.status(200).json({
           success: true,
-          message: "User by email",
+          message: "Usuarios por Email",
           data: data,
         })
       }
       if (error) {
         return res.status(404).json({
           success: true,
-          message: "User not found",
+          message: "Usuario no encontrado",
         })
       }
     } catch (error) {
@@ -47,7 +47,7 @@ export const getUsers = async (req: Request, res: Response) => {
       if (user) {
         return res.status(201).json({
           success: true,
-          message: "All users",
+          message: "Todos los usuarios",
           data: user,
         })
       }
@@ -141,7 +141,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       if (updated) {
         return res.status(201).json({
           success: true,
-          message: "Your profile was updated",
+          message: "Tu perfil ha sido actualizado",
           data: updated,
         })
       }
@@ -159,7 +159,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       if (updated) {
         return res.status(201).json({
           success: true,
-          message: "Your profile was updated",
+          message: "Tu perfil ha sido actualizado",
           data: updated,
         })
       }
@@ -187,7 +187,7 @@ export const getUserPosts = async (req: Request, res: Response) => {
     if (post) {
       return res.status(201).json({
         success: true,
-        message: "Posts by user",
+        message: "Posts por usuario",
         data: post,
       })
     }

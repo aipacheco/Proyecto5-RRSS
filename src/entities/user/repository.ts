@@ -4,7 +4,7 @@ import Post from "../post/model"
 export const getUsers = async () => {
   const users = await User.find()
   if (!users) {
-    return { error: "users not found" }
+    return { error: "Usuarios no encontrados" }
   }
   return { user: users }
 }
@@ -34,7 +34,7 @@ export const updateProfile = async (
 ) => {
   const myProfile = await User.findById(userId)
   if (!myProfile) {
-    return { error: "profile not found" }
+    return { error: "Perfil no encontrado" }
   }
 
   const updateData: { description?: string; avatar?: string; banner?: string } =
@@ -58,7 +58,7 @@ export const updateDescription = async (
 ) => {
   const myProfile = await User.findById(userId)
   if (!myProfile) {
-    return { error: "profile not found" }
+    return { error: "Perfil no encontrado" }
   }
 
   const updatedProfile = await User.findOneAndUpdate(
@@ -72,7 +72,7 @@ export const updateDescription = async (
 export const findUsername = async (userId: number) => {
   const search = await User.findById(userId)
   if (!search) {
-    return { error: "user not found" }
+    return { error: "Usuario no encontrado" }
   }
   return search.username
 }
@@ -82,7 +82,7 @@ export const getUserPosts = async (userId: string) => {
     author: userId,
   })
   if (!userPosts) {
-    return { error: "user has no posts" }
+    return { error: "El usuario no tiene posts" }
   }
   return { post: userPosts }
 }
@@ -90,7 +90,7 @@ export const getUserPosts = async (userId: string) => {
 export const getUserByEmail = async (email: string) => {
   const findEmail = await User.findOne({ email: email })
   if (!findEmail) {
-    return { error: "email not found" }
+    return { error: "Email no encontrado" }
   }
   return { data: findEmail }
 }
@@ -98,7 +98,7 @@ export const getUserByEmail = async (email: string) => {
 export const inactiveUser = async (userId: string) => {
   const profile = await User.findById(userId)
   if (!profile) {
-    return { error: "profile not found" }
+    return { error: "Perfil no encontrado" }
   }
 
   if (profile.role === "super_admin") {

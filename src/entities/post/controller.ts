@@ -27,7 +27,7 @@ export const createPost = async (req: Request, res: Response) => {
       if (post) {
         return res.status(201).json({
           success: true,
-          message: "Post created",
+          message: "Post creado",
           data: post,
         })
       }
@@ -54,7 +54,7 @@ export const deletePost = async (req: Request, res: Response) => {
     if (post) {
       return res.status(201).json({
         success: true,
-        message: "Post deleted",
+        message: "Post borrado",
         data: post,
       })
     }
@@ -98,7 +98,7 @@ export const updatePost = async (req: Request, res: Response) => {
       if (post) {
         return res.status(201).json({
           success: true,
-          message: "Post updated",
+          message: "Post actualizado",
           data: post,
         })
       }
@@ -126,7 +126,7 @@ export const getMyPosts = async (req: Request, res: Response) => {
     if (post) {
       return res.status(200).json({
         success: true,
-        message: "All my posts",
+        message: "Todos mis posts",
         data: post,
       })
     }
@@ -150,7 +150,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
     if (post) {
       return res.status(200).json({
         success: true,
-        message: "All posts",
+        message: "Todos los posts",
         data: post,
       })
     }
@@ -175,7 +175,7 @@ export const getPostById = async (req: Request, res: Response) => {
     if (post) {
       return res.status(200).json({
         success: true,
-        message: "Your post",
+        message: "Tu post",
         data: post,
       })
     }
@@ -226,7 +226,7 @@ export const getPublicPosts = () => async (req: Request, res: Response) => {
     if (post) {
       return res.status(200).json({
         success: true,
-        message: "All posts",
+        message: "Todos los posts",
         data: post,
       })
     }
