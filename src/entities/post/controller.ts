@@ -44,19 +44,24 @@ export const deletePost = async (req: Request, res: Response) => {
   const { id } = req.params
   const { userId } = req.tokenData
   try {
-    const { post, error } = await Repository.deletePost(id, userId)
+    const { post, error, message } = await Repository.deletePost(id, userId)
     if (error) {
       return res.status(400).json({
         success: false,
         message: error,
       })
     }
-
     if (post) {
       return res.status(201).json({
         success: true,
         message: "Post deleted",
         data: post,
+      })
+    }
+    if (message) {
+      return res.status(201).json({
+        success: true,
+        message: message,
       })
     }
   } catch (error) {
